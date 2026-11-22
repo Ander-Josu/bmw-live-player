@@ -1,5 +1,5 @@
 
-const CACHE_NAME = "bmw-live-player-v2";
+const CACHE_NAME = "bmw-live-player-v3";
 
 const ARCHIVOS = [
     "./",

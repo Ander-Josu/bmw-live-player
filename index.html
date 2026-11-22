@@ -5,16 +5,13 @@
 <meta charset="UTF-8">
 <meta name="viewport"
       content="width=device-width, initial-scale=1.0">
-
 <title>BMW - Live Player</title>
 <link rel="manifest" href="./manifest.json">
 <meta name="theme-color" content="#2e7d32">
-
 <style>
     * {
         box-sizing: border-box;
     }
-
     body {
         margin: 0;
         background: #181818;
@@ -22,31 +19,26 @@
         font-family: Arial, sans-serif;
         padding: 16px;
     }
-
     .contenedor {
         max-width: 750px;
         margin: auto;
     }
-
     h1 {
         text-align: center;
         color: #4CAF50;
         font-size: 28px;
     }
-
     .subtitulo {
         color: #aaa;
         text-align: center;
         font-size: 14px;
     }
-
     .panel {
         background: #252525;
         border-radius: 10px;
         padding: 15px;
         margin: 15px 0;
     }
-
     .cancion {
         background: #333;
         padding: 16px;
@@ -55,15 +47,12 @@
         cursor: pointer;
         overflow-wrap: anywhere;
     }
-
     .cancion.seleccionada {
         background: #2e7d32;
     }
-
     .cancion.bloqueada {
         cursor: not-allowed;
     }
-
     button, .boton-cargar {
         color: white;
         background: #383838;
@@ -75,49 +64,80 @@
         width: 100%;
         touch-action: manipulation;
     }
-
     button:disabled {
         opacity: 0.4;
         cursor: not-allowed;
     }
-
     .boton-cargar {
         display: block;
         background: #2e7d32;
         text-align: center;
         margin: 15px 0;
     }
-
     input[type="file"] {
         display: none;
     }
-
     .fila {
         display: flex;
         gap: 10px;
         margin: 10px 0;
     }
-
     .fila > button {
         flex: 1;
         min-width: 0;
     }
+    .gestion-canciones button {
+        font-size: 15px;
+        padding: 13px 8px;
+    }
 
+    .boton-sustituir {
+        background: #245b35;
+    }
+
+    .boton-eliminar {
+        background: #7b3030;
+    }
+
+
+    /* Confirmación integrada: no depende de ventanas emergentes del navegador */
+    .confirmacion-fondo {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, .85);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+    }
+    .confirmacion-fondo[hidden] { display: none; }
+    .confirmacion-panel {
+        width: 100%;
+        max-width: 460px;
+        background: #292929;
+        border: 2px solid #b44b4b;
+        border-radius: 14px;
+        padding: 22px;
+        text-align: center;
+    }
+    .confirmacion-panel h2 { margin-top: 0; }
+    .confirmacion-panel p { line-height: 1.5; overflow-wrap: anywhere; }
+    .confirmacion-panel .advertencia { color: #ccc; font-size: 14px; }
+    .confirmacion-panel .fila { margin-top: 18px; }
+    .confirmacion-panel #confirmarEliminar { background: #922c2c; }
     .detener {
         background: #922c2c;
     }
-
     .principal {
         background: #2e7d32;
     }
-
     .estado {
         font-size: 19px;
         text-align: center;
         padding: 12px;
         overflow-wrap: anywhere;
     }
-
     .titulo-cancion {
         color: #4CAF50;
         font-size: 22px;
@@ -125,13 +145,11 @@
         text-align: center;
         overflow-wrap: anywhere;
     }
-
     progress {
         width: 100%;
         height: 16px;
         accent-color: #4CAF50;
     }
-
     .tiempos {
         display: flex;
         justify-content: space-between;
@@ -139,29 +157,24 @@
         font-size: 19px;
         margin-top: 12px;
     }
-
     .seguridad {
         color: #aaa;
         text-align: center;
         font-size: 14px;
         margin: 12px 0;
     }
-
     .aviso {
         color: #aaa;
         font-size: 13px;
         text-align: center;
         line-height: 1.5;
     }
-
     /* MODO ESCENARIO */
-
     .boton-modo {
         background: #245b35;
         margin: 15px 0;
         font-weight: bold;
     }
-
     .siguiente {
         display: none;
         background: #303030;
@@ -169,89 +182,71 @@
         padding: 16px;
         margin-top: 20px;
     }
-
     .siguiente small {
         display: block;
         color: #aaa;
         margin-bottom: 7px;
     }
-
     .siguiente strong {
         display: block;
         font-size: 20px;
         overflow-wrap: anywhere;
         margin-bottom: 15px;
     }
-
     /* Nuevo botón de siguiente canción */
-
     .boton-siguiente {
         background: #2463a0;
         font-weight: bold;
         min-height: 70px;
     }
-
     body.modo-escenario {
         background: #101010;
     }
-
     body.modo-escenario .contenedor {
         max-width: 1000px;
     }
-
     body.modo-escenario h1 {
         font-size: 32px;
     }
-
     body.modo-escenario .subtitulo,
     body.modo-escenario .boton-cargar,
     body.modo-escenario .panel-repertorio,
     body.modo-escenario .aviso {
         display: none;
     }
-
     body.modo-escenario .panel-reproductor {
         background: #1c1c1c;
         padding: 22px;
     }
-
     body.modo-escenario .titulo-cancion {
         font-size: clamp(28px, 6vw, 52px);
         padding: 22px 0;
     }
-
     body.modo-escenario .estado {
         font-size: 25px;
     }
-
     body.modo-escenario .tiempos {
         font-size: clamp(28px, 7vw, 50px);
         padding: 20px 0;
         font-variant-numeric: tabular-nums;
     }
-
     body.modo-escenario button {
         min-height: 75px;
         font-size: 20px;
     }
-
     body.modo-escenario progress {
         height: 22px;
     }
-
     body.modo-escenario .siguiente {
         display: block;
     }
-
     @media (max-width: 450px) {
         .fila {
             gap: 6px;
         }
-
         button {
             font-size: 15px;
         }
-
         body.modo-escenario .fila button {
             font-size: 17px;
             padding: 12px 6px;
@@ -259,21 +254,29 @@
     }
 </style>
 </head>
-
 <body>
+    <div id="confirmacionEliminar" class="confirmacion-fondo" hidden
+         role="dialog" aria-modal="true" aria-labelledby="tituloEliminar">
+        <div class="confirmacion-panel">
+            <h2 id="tituloEliminar">¿Eliminar esta canción?</h2>
+            <p id="nombreEliminar"></p>
+            <p class="advertencia">Se eliminará la copia guardada en BMW - Live Player.
+                El MP3 original de la carpeta Songs no se borrará.</p>
+            <div class="fila">
+                <button id="cancelarEliminar">CANCELAR</button>
+                <button id="confirmarEliminar">ELIMINAR</button>
+            </div>
+        </div>
+    </div>
 
 <div class="contenedor">
-
     <h1>BMW - LIVE PLAYER</h1>
-
     <p class="subtitulo">
         Reproductor de acompañamientos en directo
     </p>
-
     <button id="modoEscenario" class="boton-modo">
         🎤 ACTIVAR MODO ESCENARIO
     </button>
-
     <label class="boton-cargar">
         + IMPORTAR CANCIONES MP3
         <input type="file"
@@ -281,102 +284,84 @@
                accept=".mp3,audio/mpeg"
                multiple>
     </label>
-
     <div class="panel panel-repertorio">
-
         <h3>REPERTORIO</h3>
-
         <div id="repertorio">
             Cargando canciones...
         </div>
-
         <div class="fila">
             <button id="subir">↑ SUBIR</button>
             <button id="bajar">↓ BAJAR</button>
         </div>
 
+        <div class="fila gestion-canciones">
+            <button id="sustituir" class="boton-sustituir" disabled>
+                ↻ SUSTITUIR MP3
+            </button>
+            <button id="eliminar" class="boton-eliminar" disabled>
+                ✕ ELIMINAR
+            </button>
+        </div>
+        <input type="file" id="archivoSustituto" accept=".mp3,audio/mpeg">
     </div>
-
     <div class="panel panel-reproductor">
-
         <div id="nombreCancion"
              class="titulo-cancion">
             Ninguna canción seleccionada
         </div>
-
         <div id="estado" class="estado">
             DETENIDO
         </div>
-
         <div id="seguridad" class="seguridad">
             REPERTORIO DESBLOQUEADO
         </div>
-
         <progress id="progreso"
                   value="0"
                   max="100"></progress>
-
         <div class="tiempos">
             <span id="transcurrido">00:00</span>
             <span id="restante">-00:00</span>
         </div>
-
         <div class="fila">
             <button id="reproducir" class="principal">
                 ▶ REPRODUCIR
             </button>
-
             <button id="pausar">
                 ⏸ PAUSA
             </button>
         </div>
-
         <button id="detener" class="detener">
             ■ DETENER
         </button>
-
         <!-- Siguiente canción en modo escenario -->
-
         <div class="siguiente">
-
             <small>SIGUIENTE CANCIÓN</small>
-
             <strong id="siguienteCancion">
                 Sin canción siguiente
             </strong>
-
             <button id="reproducirSiguiente"
                     class="boton-siguiente"
                     disabled>
                 ▶ REPRODUCIR SIGUIENTE
             </button>
-
         </div>
-
     </div>
-
     <p id="informacion" class="aviso">
         Preparando reproductor...
     </p>
-
     <p class="aviso">
         Conserva los MP3 originales en Songs.
         El almacenamiento del navegador
         puede ser eliminado por Android.
     </p>
-
 </div>
-
 <script>
 "use strict";
-
 // -------------------------------------------
 // ELEMENTOS
 // -------------------------------------------
-
 const audio = new Audio();
 audio.preload = "auto";
-
 const elementos = {
     archivos: document.getElementById("archivos"),
     repertorio: document.getElementById("repertorio"),
@@ -389,6 +374,9 @@ const elementos = {
     informacion: document.getElementById("informacion"),
     subir: document.getElementById("subir"),
     bajar: document.getElementById("bajar"),
+    sustituir: document.getElementById("sustituir"),
+    eliminar: document.getElementById("eliminar"),
+    archivoSustituto: document.getElementById("archivoSustituto"),
     reproducir: document.getElementById("reproducir"),
     pausar: document.getElementById("pausar"),
     detener: document.getElementById("detener"),
@@ -398,7 +386,6 @@ const elementos = {
         "reproducirSiguiente"
     )
 };
-
 let db = null;
 let canciones = [];
 let seleccionada = -1;
@@ -406,11 +393,9 @@ let urlActual = null;
 let bloqueado = false;
 let operacionRepertorio = false;
 let avanzando = false;
-
 // -------------------------------------------
 // BASE DE DATOS
 // -------------------------------------------
-
 function abrirBD() {
     return new Promise((resolve, reject) => {
         if (!window.indexedDB) {
@@ -419,30 +404,24 @@ function abrirBD() {
             ));
             return;
         }
-
         const solicitud = indexedDB.open(
             "BMW_Live_Player", 1
         );
-
         solicitud.onupgradeneeded = () => {
             const base = solicitud.result;
-
             if (!base.objectStoreNames.contains("songs")) {
                 base.createObjectStore(
                     "songs", { keyPath: "name" }
                 );
             }
         };
-
         solicitud.onsuccess = () => {
             db = solicitud.result;
             resolve(db);
         };
-
         solicitud.onerror = () => {
             reject(solicitud.error);
         };
-
         solicitud.onblocked = () => {
             reject(new Error(
                 "La base de datos está bloqueada"
@@ -450,119 +429,98 @@ function abrirBD() {
         };
     });
 }
-
 function leerCanciones() {
     return new Promise((resolve, reject) => {
         const tx = db.transaction("songs", "readonly");
-
         const solicitud = tx
             .objectStore("songs")
             .getAll();
-
         solicitud.onsuccess = () => {
             resolve(solicitud.result);
         };
-
         solicitud.onerror = () => {
             reject(solicitud.error);
         };
     });
 }
-
 function guardarRegistros(registros) {
     return new Promise((resolve, reject) => {
         const tx = db.transaction(
             "songs", "readwrite"
         );
-
         const almacen = tx.objectStore("songs");
-
         for (const registro of registros) {
             almacen.put(registro);
         }
-
         tx.oncomplete = () => resolve();
-
         tx.onerror = () => reject(tx.error);
-
         tx.onabort = () => reject(
             tx.error || new Error("Guardado cancelado")
         );
     });
 }
+function eliminarRegistro(nombre) {
+    return new Promise((resolve, reject) => {
+        const tx = db.transaction("songs", "readwrite");
+        tx.objectStore("songs").delete(nombre);
+        tx.oncomplete = () => resolve();
+        tx.onerror = () => reject(tx.error);
+        tx.onabort = () => reject(tx.error || new Error("Eliminación cancelada"));
+    });
+}
 
 async function cargarCancionesGuardadas() {
     canciones = await leerCanciones();
-
     canciones.sort((a, b) => a.order - b.order);
-
     mostrarRepertorio();
 }
-
 // -------------------------------------------
 // IMPORTAR CANCIONES
 // -------------------------------------------
-
 elementos.archivos.addEventListener(
     "change", async (evento) => {
-
     const archivos = Array.from(evento.target.files);
-
     if (!archivos.length) return;
-
     if (bloqueado || operacionRepertorio || avanzando) {
         elementos.informacion.textContent =
             "Detén la reproducción antes de importar.";
         evento.target.value = "";
         return;
     }
-
     operacionRepertorio = true;
     actualizarControles();
-
     try {
         const existentes = await leerCanciones();
-
         const nombres = new Set(
             existentes.map(c => c.name)
         );
-
         let siguienteOrden = existentes.reduce(
             (maximo, c) => Math.max(
                 maximo, Number(c.order) || 0
             ), -1
         ) + 1;
-
         const nuevos = [];
-
         for (const archivo of archivos) {
             if (!/\.mp3$/i.test(archivo.name)) {
                 continue;
             }
-
             if (nombres.has(archivo.name)) {
                 continue;
             }
-
             nuevos.push({
                 name: archivo.name,
                 order: siguienteOrden++,
                 blob: archivo
             });
-
             nombres.add(archivo.name);
         }
-
         if (nuevos.length) {
             await guardarRegistros(nuevos);
         }
-
         await cargarCancionesGuardadas();
-
         elementos.informacion.textContent =
             `${nuevos.length} canciones nuevas guardadas. ` +
             `${canciones.length} disponibles.`;
-
     } catch (error) {
         mostrarError(error);
     } finally {
@@ -571,58 +529,47 @@ elementos.archivos.addEventListener(
         actualizarControles();
     }
 });
-
 // -------------------------------------------
 // MOSTRAR REPERTORIO
 // -------------------------------------------
-
 function mostrarRepertorio() {
     elementos.repertorio.innerHTML = "";
-
     if (!canciones.length) {
         elementos.repertorio.textContent =
             "Todavía no hay canciones guardadas.";
     }
-
     canciones.forEach((cancion, indice) => {
         const elemento = document.createElement("div");
-
         elemento.className = "cancion";
-
         if (indice === seleccionada) {
             elemento.classList.add("seleccionada");
         }
-
         if (bloqueado || operacionRepertorio || avanzando) {
             elemento.classList.add("bloqueada");
         }
-
         elemento.textContent =
             `${String(indice + 1).padStart(2, "0")}. ` +
             cancion.name.replace(/\.mp3$/i, "");
-
         elemento.addEventListener("click", () => {
             seleccionarCancion(indice);
         });
-
         elementos.repertorio.appendChild(elemento);
     });
-
     actualizarControles();
     actualizarSiguiente();
 }
-
 function actualizarControles() {
     const ocupado =
         bloqueado || operacionRepertorio || avanzando;
-
     elementos.subir.disabled =
         ocupado || seleccionada <= 0;
-
     elementos.bajar.disabled =
         ocupado ||
         seleccionada < 0 ||
         seleccionada >= canciones.length - 1;
+    elementos.sustituir.disabled = ocupado || seleccionada < 0;
+    elementos.eliminar.disabled = ocupado || seleccionada < 0;
+    elementos.archivos.disabled = ocupado;
 
     // Nuevo control: siguiente canción.
     elementos.botonSiguiente.disabled =
@@ -630,72 +577,181 @@ function actualizarControles() {
         seleccionada < 0 ||
         seleccionada >= canciones.length - 1;
 }
-
 function actualizarSiguiente() {
     const indice = seleccionada + 1;
-
     if (seleccionada < 0) {
         elementos.siguiente.textContent =
             "Selecciona una canción";
-
     } else if (indice < canciones.length) {
         elementos.siguiente.textContent =
             canciones[indice].name.replace(/\.mp3$/i, "");
-
     } else {
         elementos.siguiente.textContent =
             "Final del repertorio";
     }
-
     actualizarControles();
 }
-
 // -------------------------------------------
 // SELECCIONAR CANCIÓN
 // -------------------------------------------
-
 function seleccionarCancion(indice) {
     if (bloqueado || operacionRepertorio) return;
-
     if (indice < 0 || indice >= canciones.length) {
         return;
     }
-
     audio.pause();
     audio.removeAttribute("src");
     audio.load();
-
     if (urlActual) {
         URL.revokeObjectURL(urlActual);
         urlActual = null;
     }
-
     seleccionada = indice;
-
     const cancion = canciones[indice];
-
     urlActual = URL.createObjectURL(cancion.blob);
-
     audio.src = urlActual;
     audio.load();
-
     elementos.nombre.textContent =
         cancion.name.replace(/\.mp3$/i, "");
-
     elementos.estado.textContent =
         "● LISTA PARA REPRODUCIR";
-
     elementos.progreso.value = 0;
     elementos.transcurrido.textContent = "00:00";
     elementos.restante.textContent = "-00:00";
-
     mostrarRepertorio();
 }
+// -------------------------------------------
+// SUSTITUIR O ELIMINAR UNA PISTA
+// -------------------------------------------
+
+function sePuedeGestionar() {
+    return Boolean(db) && !bloqueado && !operacionRepertorio &&
+        !avanzando && seleccionada >= 0 && seleccionada < canciones.length;
+}
+
+elementos.sustituir.addEventListener("click", () => {
+    if (!sePuedeGestionar()) return;
+    elementos.archivoSustituto.value = "";
+    elementos.archivoSustituto.click();
+});
+
+elementos.archivoSustituto.addEventListener("change", async (evento) => {
+    const archivo = evento.target.files?.[0];
+    evento.target.value = "";
+    if (!archivo || !sePuedeGestionar()) return;
+
+    if (!/\.mp3$/i.test(archivo.name) || archivo.size === 0) {
+        alert("Selecciona un archivo MP3 válido y no vacío.");
+        return;
+    }
+
+    const indice = seleccionada;
+    const anterior = canciones[indice];
+    const mensaje = `¿Sustituir el audio de «${anterior.name}» por «${archivo.name}»?\n\n` +
+        "Se conservarán el nombre y la posición en el repertorio. " +
+        "El MP3 anterior dejará de estar guardado en la aplicación.";
+    if (!confirm(mensaje)) return;
+
+    operacionRepertorio = true;
+    actualizarControles();
+    try {
+        // Misma clave e idéntico orden: la base de datos sustituye el blob.
+        await guardarRegistros([{
+            name: anterior.name, order: anterior.order, blob: archivo
+        }]);
+        await cargarCancionesGuardadas();
+        // Liberar la URL del audio antiguo y cargar el audio nuevo.
+        operacionRepertorio = false;
+        seleccionarCancion(indice);
+        elementos.informacion.textContent =
+            `Pista sustituida: ${anterior.name} (audio: ${archivo.name}).`;
+    } catch (error) {
+        mostrarError(error);
+        try { await cargarCancionesGuardadas(); } catch (_) {}
+    } finally {
+        operacionRepertorio = false;
+        actualizarControles();
+    }
+});
+
+// Confirmación visible dentro de la propia aplicación.
+const confirmacionEliminar = document.getElementById("confirmacionEliminar");
+const nombreEliminar = document.getElementById("nombreEliminar");
+const botonConfirmarEliminar = document.getElementById("confirmarEliminar");
+const botonCancelarEliminar = document.getElementById("cancelarEliminar");
+let eliminacionPendiente = null;
+
+function cerrarConfirmacionEliminar() {
+    confirmacionEliminar.hidden = true;
+    eliminacionPendiente = null;
+}
+
+elementos.eliminar.addEventListener("click", () => {
+    if (!sePuedeGestionar()) {
+        elementos.informacion.textContent =
+            "Selecciona una canción y detén la reproducción para eliminarla.";
+        return;
+    }
+    const cancion = canciones[seleccionada];
+    // Guardamos la clave y no el índice: evita borrar otra canción
+    // si hubiera un cambio de selección antes de confirmar.
+    eliminacionPendiente = cancion.name;
+    nombreEliminar.textContent = cancion.name.replace(/\.mp3$/i, "");
+    confirmacionEliminar.hidden = false;
+});
+
+botonCancelarEliminar.addEventListener("click", cerrarConfirmacionEliminar);
+
+botonConfirmarEliminar.addEventListener("click", async () => {
+    if (!eliminacionPendiente || !sePuedeGestionar()) {
+        cerrarConfirmacionEliminar();
+        return;
+    }
+    const nombre = eliminacionPendiente;
+    if (canciones[seleccionada]?.name !== nombre) {
+        cerrarConfirmacionEliminar();
+        elementos.informacion.textContent =
+            "La selección ha cambiado. Vuelve a seleccionar la canción.";
+        return;
+    }
+    botonConfirmarEliminar.disabled = true;
+    botonCancelarEliminar.disabled = true;
+    operacionRepertorio = true;
+    actualizarControles();
+    try {
+        await eliminarRegistro(nombre);
+        // Liberar el archivo de audio asociado a la canción eliminada.
+        audio.pause();
+        audio.removeAttribute("src");
+        audio.load();
+        if (urlActual) {
+            URL.revokeObjectURL(urlActual);
+            urlActual = null;
+        }
+        seleccionada = -1;
+        bloqueado = false;
+        elementos.nombre.textContent = "Ninguna canción seleccionada";
+        elementos.estado.textContent = "■ DETENIDO";
+        elementos.progreso.value = 0;
+        elementos.transcurrido.textContent = "00:00";
+        elementos.restante.textContent = "-00:00";
+        await cargarCancionesGuardadas();
+        elementos.informacion.textContent = `Canción eliminada: ${nombre}.`;
+    } catch (error) {
+        mostrarError(error);
+        try { await cargarCancionesGuardadas(); } catch (_) {}
+    } finally {
+        cerrarConfirmacionEliminar();
+        botonConfirmarEliminar.disabled = false;
+        botonCancelarEliminar.disabled = false;
+        operacionRepertorio = false;
+        actualizarSeguridad();
+    }
+});
 
 // -------------------------------------------
 // ORDENAR REPERTORIO
 // -------------------------------------------
-
 async function moverCancion(direccion) {
     if (
         bloqueado ||
@@ -703,19 +759,14 @@ async function moverCancion(direccion) {
         avanzando ||
         seleccionada < 0
     ) return;
-
     const nuevo = seleccionada + direccion;
-
     if (nuevo < 0 || nuevo >= canciones.length) {
         return;
     }
-
     operacionRepertorio = true;
     actualizarControles();
-
     const ordenAnterior = [...canciones];
     const indiceAnterior = seleccionada;
-
     [
         canciones[seleccionada],
         canciones[nuevo]
@@ -723,102 +774,78 @@ async function moverCancion(direccion) {
         canciones[nuevo],
         canciones[seleccionada]
     ];
-
     seleccionada = nuevo;
-
     canciones.forEach((cancion, indice) => {
         cancion.order = indice;
     });
-
     try {
         await guardarRegistros(canciones);
         mostrarRepertorio();
-
     } catch (error) {
         canciones = ordenAnterior;
         seleccionada = indiceAnterior;
         mostrarError(error);
         await cargarCancionesGuardadas();
-
     } finally {
         operacionRepertorio = false;
         actualizarControles();
     }
 }
-
 elementos.subir.addEventListener(
     "click", () => moverCancion(-1)
 );
-
 elementos.bajar.addEventListener(
     "click", () => moverCancion(1)
 );
-
 // -------------------------------------------
 // REPRODUCCIÓN
 // -------------------------------------------
-
 elementos.reproducir.addEventListener(
     "click", reproducir
 );
-
 elementos.pausar.addEventListener(
     "click", pausar
 );
-
 elementos.detener.addEventListener(
     "click", detener
 );
-
 async function reproducir() {
     if (seleccionada < 0 || operacionRepertorio) {
         elementos.estado.textContent =
             "Selecciona primero una canción";
         return;
     }
-
     try {
         await audio.play();
-
     } catch (error) {
         mostrarError(error);
     }
 }
-
 function pausar() {
     if (!bloqueado) return;
-
     if (audio.paused) {
         reproducir();
     } else {
         audio.pause();
     }
 }
-
 function detener() {
     audio.pause();
-
     if (audio.src) {
         audio.currentTime = 0;
     }
-
     bloqueado = false;
-
     elementos.estado.textContent = "■ DETENIDO";
     actualizarSeguridad();
     actualizarTiempo();
 }
-
 // -------------------------------------------
 // NUEVO: REPRODUCIR SIGUIENTE
 // -------------------------------------------
-
 elementos.botonSiguiente.addEventListener(
     "click", reproducirSiguiente
 );
-
 async function reproducirSiguiente() {
-
     // Impedir cambios durante reproducción,
     // pausa, importación o transición.
     if (
@@ -828,186 +855,137 @@ async function reproducirSiguiente() {
     ) {
         return;
     }
-
     const indiceSiguiente = seleccionada + 1;
-
     if (
         seleccionada < 0 ||
         indiceSiguiente >= canciones.length
     ) {
         return;
     }
-
     // Evitar varios toques consecutivos.
     avanzando = true;
     actualizarControles();
-
     try {
         // Preparar la canción siguiente.
         seleccionarCancion(indiceSiguiente);
-
         // Iniciar exclusivamente por orden
         // del usuario al pulsar este botón.
         await audio.play();
-
     } catch (error) {
         mostrarError(error);
-
     } finally {
         avanzando = false;
         actualizarControles();
     }
 }
-
 // -------------------------------------------
 // EVENTOS DE AUDIO
 // -------------------------------------------
-
 audio.addEventListener("play", () => {
     bloqueado = true;
-
     elementos.estado.textContent =
         "▶ REPRODUCIENDO";
-
     actualizarSeguridad();
 });
-
 audio.addEventListener("pause", () => {
     if (bloqueado && !audio.ended) {
         elementos.estado.textContent =
             "⏸ EN PAUSA";
     }
 });
-
 audio.addEventListener("ended", () => {
     bloqueado = false;
-
     elementos.estado.textContent =
         "✓ CANCIÓN FINALIZADA";
-
     actualizarSeguridad();
 });
-
 audio.addEventListener("timeupdate", actualizarTiempo);
 audio.addEventListener("durationchange", actualizarTiempo);
-
 audio.addEventListener("error", () => {
     bloqueado = false;
-
     elementos.estado.textContent =
         "ERROR DE REPRODUCCIÓN";
-
     actualizarSeguridad();
 });
-
 // -------------------------------------------
 // TIEMPOS
 // -------------------------------------------
-
 function formatear(segundos) {
     if (!Number.isFinite(segundos) || segundos < 0) {
         segundos = 0;
     }
-
     segundos = Math.floor(segundos);
-
     const minutos = Math.floor(segundos / 60);
     const resto = segundos % 60;
-
     return (
         String(minutos).padStart(2, "0") +
         ":" +
         String(resto).padStart(2, "0")
     );
 }
-
 function actualizarTiempo() {
     const actual = audio.currentTime || 0;
-
     const total = Number.isFinite(audio.duration)
         ? audio.duration : 0;
-
     const restante = Math.max(0, total - actual);
-
     elementos.progreso.value = total > 0
         ? (actual / total) * 100 : 0;
-
     elementos.transcurrido.textContent =
         formatear(actual);
-
     elementos.restante.textContent =
         "-" + formatear(restante);
 }
-
 // -------------------------------------------
 // SEGURIDAD
 // -------------------------------------------
-
 function actualizarSeguridad() {
     elementos.seguridad.textContent = bloqueado
         ? "🔒 CAMBIO DE CANCIÓN BLOQUEADO"
         : "🔓 REPERTORIO DESBLOQUEADO";
-
     mostrarRepertorio();
 }
-
 // -------------------------------------------
 // MODO ESCENARIO
 // -------------------------------------------
-
 elementos.modo.addEventListener("click", () => {
     const activo = document.body.classList.toggle(
         "modo-escenario"
     );
-
     elementos.modo.textContent = activo
         ? "↩ VOLVER AL REPERTORIO"
         : "🎤 ACTIVAR MODO ESCENARIO";
-
     actualizarSiguiente();
 });
-
 // -------------------------------------------
 // ERRORES
 // -------------------------------------------
-
 function mostrarError(error) {
     console.error(error);
-
     elementos.informacion.textContent =
         "ERROR: " + (error.message || String(error));
-
     elementos.estado.textContent =
         "ERROR: REVISA LA REPRODUCCIÓN";
 }
-
 // -------------------------------------------
 // INICIO
 // -------------------------------------------
-
 async function iniciar() {
     try {
         await abrirBD();
         await cargarCancionesGuardadas();
-
         elementos.informacion.textContent =
             `${canciones.length} canciones guardadas ` +
             "en este navegador.";
-
     } catch (error) {
         mostrarError(error);
-
         elementos.repertorio.textContent =
             "No se pudo acceder al almacenamiento.";
     }
 }
-
 iniciar();
-
 // -------------------------------------------
 // SERVICE WORKER
 // -------------------------------------------
-
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", async () => {
         try {
@@ -1015,12 +993,10 @@ if ("serviceWorker" in navigator) {
                 await navigator.serviceWorker.register(
                     "./service-worker.js"
                 );
-
             console.log(
                 "Service Worker registrado:",
                 registro.scope
             );
-
         } catch (error) {
             console.warn(
                 "Service Worker no disponible:",
@@ -1029,7 +1005,6 @@ if ("serviceWorker" in navigator) {
         }
     });
 }
-
 </script>
 </body>
 </html>
